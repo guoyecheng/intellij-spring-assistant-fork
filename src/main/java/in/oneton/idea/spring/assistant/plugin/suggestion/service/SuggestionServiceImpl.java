@@ -33,10 +33,10 @@ import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -375,6 +375,9 @@ public class SuggestionServiceImpl implements SuggestionService {
      */
     private List<MetadataContainerInfo> computeContainersToRemove(OrderEnumerator orderEnumerator,
                                                                   Map<String, MetadataContainerInfo> seenContainerPathToContainerInfo) {
+        if(seenContainerPathToContainerInfo.isEmpty()) {
+            return Collections.emptyList();
+        }
         Set<String> newContainerPaths = stream(orderEnumerator.recursively().classes().getRoots())
                 .flatMap(MetadataContainerInfo::getContainerArchiveOrFileRefs).collect(toSet());
         Set<String> knownContainerPathSet = new THashSet<>(seenContainerPathToContainerInfo.keySet());
