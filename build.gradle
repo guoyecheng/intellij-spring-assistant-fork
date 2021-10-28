@@ -20,7 +20,7 @@ plugins {
 
 
 group = 'in.oneton.idea.spring'
-version = '1.0.2'
+version = '1.0.2b'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -80,7 +80,7 @@ publishPlugin {
 
 patchPluginXml {
     sinceBuild '203.1.0'
-    untilBuild '212.*'
+    untilBuild '213.*'
     pluginDescription readmeXmlAsHtml()
     changeNotes changeLogAsHtml()
 }
@@ -88,8 +88,8 @@ patchPluginXml {
 String readmeXmlAsHtml() {
     final String readmeContent = new File(rootProject.uri('README.md')).text
     // since these images needs to shown from within intellij, lest put absolute urls so that the images & changelog will be visible
-            .replaceAll("help\\.gif", "https://raw.githubusercontent.com/eltonsandre/intellij-spring-assistant/" + version + "/help.gif")
-            .replaceAll("CHANGELOG.md", "https://github.com/eltonsandre/intellij-spring-assistant/blob/" + version + "/CHANGELOG.md")
+            .replaceAll("help\\.gif", "https://raw.githubusercontent.com/cheng6563/intellij-spring-assistant/" + version + "/help.gif")
+            .replaceAll("CHANGELOG.md", "https://github.com/cheng6563/intellij-spring-assistant/blob/" + version + "/CHANGELOG.md")
 
     final Document readmeDocument = Parser.builder().build().parse(readmeContent)
     HtmlRenderer.builder().build().render(readmeDocument)
