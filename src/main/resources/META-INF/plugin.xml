@@ -1,27 +1,25 @@
-<idea-plugin url="https://github.com/eltonsandre/intellij-spring-assistant">
+<idea-plugin url="https://github.com/cheng6563/intellij-spring-assistant">
 
     <id>in.1ton.idea.spring.assistant.plugin</id>
     <name>Spring Assistant</name>
     <!-- Will be auto populated by plugin -->
-    <vendor email="dev@1ton.in" url="https://github.com/eltonsandre">
-        eltonsandre and Development Team @ 1Ton Technologies
+    <vendor email="hab852110@hotmail.com" url="https://github.com/cheng6563">
+        cheng6563
     </vendor>
 
     <!-- Will be auto populated by plugin -->
     <description>
         <![CDATA[
               <h3>Autocomplete wizard for configuration property with spring</h3>
-              application.(properties/yaml)；
+              application.yml；
 
-              Fix and refactor: IC-2020.3.+
+              Fix: IC-2021.3 EAP
           ]]>]
     </description>
     <change-notes>
         <![CDATA[
-        Fix and refactor:
-            - fix bugs and refactor build.gradle upgrade dependence versions
-            - upgrade JDK 11
-            - test: IntelliJ IDEA 2020.3.2 (Community Edition) Build #IC-203.xx
+            Fix:
+            - test: IntelliJ IDEA 2021.3 EAP (Community Edition) Build #IC-213.5281.15
           ]]>]
     </change-notes>
 
