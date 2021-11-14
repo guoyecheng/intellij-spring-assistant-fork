@@ -66,6 +66,7 @@
         <moduleBuilder
                 builderClass="in.oneton.idea.spring.assistant.plugin.initializr.InitializrModuleBuilder"
                 order="last"/>
+        <gotoDeclarationHandler implementation="in.oneton.idea.spring.assistant.plugin.suggestion.handler.YamlGotoJavaHandler"/>
 
     </extensions>
     <applicationListeners>

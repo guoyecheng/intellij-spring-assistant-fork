@@ -638,4 +638,8 @@ public class SpringConfigurationMetadataProperty
 
     }
 
+    @Nullable
+    public String getSourceType() {
+        return sourceType;
+    }
 }
