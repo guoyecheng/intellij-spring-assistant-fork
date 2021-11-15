@@ -5,7 +5,6 @@ import com.intellij.codeInsight.navigation.actions.GotoDeclarationHandler;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Pair;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
@@ -22,13 +21,10 @@ import in.oneton.idea.spring.assistant.plugin.suggestion.service.SuggestionServi
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.yaml.YAMLLanguage;
 import org.jetbrains.yaml.YAMLUtil;
-import org.jetbrains.yaml.psi.YAMLFile;
 import org.jetbrains.yaml.psi.YAMLPsiElement;
-import org.jetbrains.yaml.psi.impl.YAMLPlainTextImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.intellij.openapi.module.ModuleUtilCore.findModuleForPsiElement;
 
@@ -50,11 +46,6 @@ public class YamlGotoJavaHandler  implements GotoDeclarationHandler {
             return DEFAULT_RESULT;
         }
         String configFullName = YAMLUtil.getConfigFullName(yamlPsiElement);
-        String[] configNameSplit = configFullName.split("\\.");
-        Pair<PsiElement, String> value = YAMLUtil.getValue((YAMLFile) sourceElement.getContainingFile(), configNameSplit);
-        if (Objects.isNull(value) || !(value.getFirst() instanceof YAMLPlainTextImpl)) {
-            return DEFAULT_RESULT;
-        }
         List<PsiElement> result = new ArrayList<>();
 
         result.addAll(findByPropertiesClass(sourceElement, configFullName));
