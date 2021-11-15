@@ -2,23 +2,15 @@ package in.oneton.idea.spring.assistant.plugin.suggestion.handler;
 
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.codeInsight.navigation.actions.GotoDeclarationHandler;
-import com.intellij.ide.highlighter.JavaFileType;
-import com.intellij.lang.jvm.annotation.JvmAnnotationAttributeValue;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiAnnotation;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiNameValuePair;
-import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import in.oneton.idea.spring.assistant.plugin.suggestion.OriginalNameProvider;
@@ -27,7 +19,6 @@ import in.oneton.idea.spring.assistant.plugin.suggestion.completion.FileType;
 import in.oneton.idea.spring.assistant.plugin.suggestion.metadata.MetadataPropertySuggestionNode;
 import in.oneton.idea.spring.assistant.plugin.suggestion.metadata.json.SpringConfigurationMetadataProperty;
 import in.oneton.idea.spring.assistant.plugin.suggestion.service.SuggestionService;
-import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.yaml.YAMLLanguage;
 import org.jetbrains.yaml.YAMLUtil;
@@ -36,7 +27,6 @@ import org.jetbrains.yaml.psi.YAMLPsiElement;
 import org.jetbrains.yaml.psi.impl.YAMLPlainTextImpl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -106,16 +96,31 @@ public class YamlGotoJavaHandler  implements GotoDeclarationHandler {
                             continue;
                         }
 
+                        // find field
                         PsiField psiField = psiClass.findFieldByName(name, true);
                         if(psiField != null){
                             result.add(psiField);
-                        } else {
+                            break;
+                        }
+                        // find setter and getter
+                        {
                             String setter= "set" + name.substring(0,1).toUpperCase() + name.substring(1);
                             PsiMethod[] methodsByName = psiClass.findMethodsByName(setter, true);
                             if(methodsByName.length > 0){
                                 result.add(methodsByName[0]);
+                                break;
                             }
                         }
+                        {
+                            String getter= "get" + name.substring(0,1).toUpperCase() + name.substring(1);
+                            PsiMethod[] methodsByName = psiClass.findMethodsByName(getter, true);
+                            if(methodsByName.length > 0){
+                                result.add(methodsByName[0]);
+                                break;
+                            }
+                        }
+                        // non found field, direct use class
+                        result.add(psiClass);
                     }
                 }
             }
