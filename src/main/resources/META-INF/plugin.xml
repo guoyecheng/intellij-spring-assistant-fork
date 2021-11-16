@@ -70,8 +70,11 @@
 
     </extensions>
     <applicationListeners>
-        <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.BootstrapListener"
-                  topic="com.intellij.openapi.compiler.CompilationStatusListener"/>
+        <!-- CompilationStatusListener doesn't seem to work properly, use BuildManagerListener instead. -->
+        <!-- <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.BootstrapListener"
+                  topic="com.intellij.openapi.compiler.CompilationStatusListener"/>-->
+        <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.BuildReIndexListener"
+                  topic="com.intellij.compiler.server.BuildManagerListener"/>
 
         <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectOpenCloseListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>

@@ -23,8 +23,10 @@ import org.jetbrains.yaml.YAMLLanguage;
 import org.jetbrains.yaml.YAMLUtil;
 import org.jetbrains.yaml.psi.YAMLPsiElement;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.intellij.openapi.module.ModuleUtilCore.findModuleForPsiElement;
 
@@ -46,19 +48,19 @@ public class YamlGotoJavaHandler  implements GotoDeclarationHandler {
             return DEFAULT_RESULT;
         }
         String configFullName = YAMLUtil.getConfigFullName(yamlPsiElement);
-        List<PsiElement> result = new ArrayList<>();
+        Set<PsiElement> result = new LinkedHashSet<>();
 
         result.addAll(findByPropertiesClass(sourceElement, configFullName));
 
         return result.toArray(DEFAULT_RESULT);
     }
 
-    private List<PsiElement> findByPropertiesClass(final PsiElement sourceElement, String configFullName){
+    private Collection<PsiElement> findByPropertiesClass(final PsiElement sourceElement, String configFullName){
         String[] configNameSplit = configFullName.split("\\.");
         Module module = findModuleForPsiElement(sourceElement);
         Project project = sourceElement.getProject();
 
-        List<PsiElement> result = new ArrayList<>();
+        Set<PsiElement> result = new LinkedHashSet<>();
 
         SuggestionService suggestionService = project.getService(SuggestionService.class);
         List<LookupElementBuilder> suggestionsForQueryPrefix = suggestionService.findSuggestionsForQueryPrefix(project, module, FileType.yaml, sourceElement, null, configFullName, null);

@@ -126,7 +126,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                             } finally {
                                 indexingInProgress = false;
                                 timer.stop();
-                                debug(() -> log.debug("<- Indexing took " + timer.toString() + " for project " + project.getName()));
+                                log.info("<- Indexing took " + timer.toString() + " for project " + project.getName());
                             }
                         })
         );
