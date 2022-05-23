@@ -142,8 +142,8 @@ public abstract class ClassMetadata {
       String nodeNavigationPathDotDelimited, String originalValue);
 
   public boolean isLeaf(Module module) {
-    initIfNotAlready(module);
-    return doCheckIsLeaf(module);
+      initIfNotAlready(module);
+      return doCheckIsLeaf(module);
   }
 
   protected abstract boolean doCheckIsLeaf(Module module);

@@ -6,7 +6,6 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiType;
-import gnu.trove.THashMap;
 import in.oneton.idea.spring.assistant.plugin.suggestion.Suggestion;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNode;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNodeType;
@@ -19,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -183,12 +183,12 @@ public class EnumClassMetadata extends ClassMetadata {
         }
       }
       if (acceptableFields.size() != 0) {
-        childLookup = new THashMap<>();
+        childLookup = new HashMap<>();
         childrenTrie = new PatriciaTrie<>();
-        acceptableFields.forEach(field -> {
-          childLookup.put(sanitise(requireNonNull(field.getName())), field);
-          childrenTrie.put(sanitise(field.getName()), field);
-        });
+        for (PsiField field : acceptableFields) {
+            childLookup.put(sanitise(requireNonNull(field.getName())), field);
+            childrenTrie.put(sanitise(field.getName()), field);
+        }
       }
     } else {
       childLookup = null;

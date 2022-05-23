@@ -130,7 +130,11 @@ public class ClassMetadataProxy implements MetadataProxy {
 
     @Override
     public boolean isLeaf(Module module) {
-        return doWithTargetAndReturn(module, target -> target.isLeaf(module), true);
+        ClassMetadata target = getTarget(module);
+        if(target == null) {
+            return true;
+        }
+        return target.isLeaf(module);
     }
 
     @NotNull

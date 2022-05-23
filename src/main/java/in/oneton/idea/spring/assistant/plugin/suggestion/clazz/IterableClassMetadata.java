@@ -144,7 +144,10 @@ public class IterableClassMetadata extends ClassMetadata {
 
   @Override
   public boolean doCheckIsLeaf(Module module) {
-    return doWithDelegateAndReturn(delegate -> delegate.isLeaf(module), true);
+      if (delegate != null) {
+          return delegate.isLeaf(module);
+      }
+      return true;
   }
 
   @NotNull
