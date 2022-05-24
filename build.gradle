@@ -15,7 +15,7 @@ buildscript {
 plugins {
     id 'java'
     id 'idea'
-    id 'org.jetbrains.intellij' version '1.5.3'
+    id 'org.jetbrains.intellij' version '1.0.6'
 }
 
 
@@ -81,7 +81,7 @@ task {
 
     patchPluginXml {
         sinceBuild '203.1.0'
-        untilBuild '221.*'
+        untilBuild '222.*'
         pluginDescription readmeXmlAsHtml()
         changeNotes changeLogAsHtml()
     }

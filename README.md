@@ -76,9 +76,6 @@ To install the plugin open your editor (IntelliJ) and hit:
 
 Feel free to let me know what else you want added via the [issues](https://github.com/1tontech/intellij-spring-assistant/issues)
 
-Suggestions, feedback and other comments welcome via [@1tontech](https://twitter.com/1tontech) on Twitter
-
-[intellij-spring-assistant-1.0.1.zip](dist/intellij-spring-assistant-1.0.1.zip)
 
 ## Changelog
 
@@ -88,6 +85,3 @@ See [here](CHANGELOG.md)
 
 Spring Assistant - IntelliJ Plugin is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
-## Powered By
-
-[![Structure 101](http://structure101.com/static-content/images/s101_170.png)](http://structure101.com)
