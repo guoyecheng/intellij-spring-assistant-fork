@@ -180,6 +180,9 @@ public class SuggestionServiceImpl implements SuggestionService {
     @Override
     public List<SuggestionNode> findMatchedNodesRootTillEnd(Project project, Module module,
                                                             List<String> containerElements) {
+        if(module == null){
+            return null;
+        }
         if (moduleNameToRootSearchIndex.containsKey(module.getName())) {
             String[] pathSegments =
                     containerElements.stream().flatMap(element -> stream(toSanitizedPathSegments(element)))
