@@ -44,7 +44,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication;
 import static in.oneton.idea.spring.assistant.plugin.misc.GenericUtil.modifiableList;
@@ -270,7 +272,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                 String[] ancestralKeySegments =
                         ancestralKeys.stream().flatMap(key -> stream(toRawPathSegments(key)))
                                 .toArray(String[]::new);
-                MetadataSuggestionNode rootNode = rootSearchIndex.get(sanitise(ancestralKeySegments[0]));
+                MetadataSuggestionNode rootNode = rootSearchIndex == null ? null : rootSearchIndex.get(sanitise(ancestralKeySegments[0]));
                 if (rootNode != null) {
                     List<SuggestionNode> matchesRootToDeepest;
                     SuggestionNode startSearchFrom = null;
@@ -304,14 +306,14 @@ public class SuggestionServiceImpl implements SuggestionService {
             } else {
                 String rootQuerySegmentPrefix = querySegmentPrefixes[0];
                 SortedMap<String, MetadataSuggestionNode> topLevelQueryResults =
-                        rootSearchIndex.prefixMap(rootQuerySegmentPrefix);
+                        rootSearchIndex == null ? new TreeMap<>() : rootSearchIndex.prefixMap(rootQuerySegmentPrefix);
 
                 Collection<MetadataSuggestionNode> childNodes;
                 int querySegmentPrefixStartIndex;
 
                 // If no results are found at the top level, let dive deeper and find matches
                 if (topLevelQueryResults == null || topLevelQueryResults.size() == 0) {
-                    childNodes = rootSearchIndex.values();
+                    childNodes = rootSearchIndex == null ? new ArrayList<>() : rootSearchIndex.values();
                     querySegmentPrefixStartIndex = 0;
                 } else {
                     childNodes = topLevelQueryResults.values();
@@ -321,7 +323,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                 Collection<MetadataSuggestionNode> nodesToSearchAgainst;
                 if (siblingsToExclude != null) {
                     Set<MetadataSuggestionNode> nodesToExclude = siblingsToExclude.stream()
-                            .flatMap(exclude -> rootSearchIndex.prefixMap(exclude).values().stream())
+                            .flatMap(exclude -> rootSearchIndex == null ? Stream.empty() : rootSearchIndex.prefixMap(exclude).values().stream())
                             .collect(toSet());
                     nodesToSearchAgainst =
                             childNodes.stream().filter(node -> !nodesToExclude.contains(node)).collect(toList());
