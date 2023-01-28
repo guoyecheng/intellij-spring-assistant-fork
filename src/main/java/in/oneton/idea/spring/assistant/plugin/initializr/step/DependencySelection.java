@@ -13,11 +13,10 @@ import com.intellij.ui.components.JBList;
 import com.intellij.ui.speedSearch.FilteringListModel;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.Function;
+import com.intellij.util.ui.JBUI;
 import com.miguelfonseca.completely.AutocompleteEngine;
 import com.miguelfonseca.completely.text.analyze.tokenize.WordTokenizer;
 import com.miguelfonseca.completely.text.analyze.transform.LowerCaseTransformer;
-import gnu.trove.THashMap;
-import gnu.trove.THashSet;
 import in.oneton.idea.spring.assistant.plugin.initializr.ProjectCreationRequest;
 import in.oneton.idea.spring.assistant.plugin.initializr.metadata.InitializerMetadata;
 import in.oneton.idea.spring.assistant.plugin.initializr.metadata.InitializerMetadata.DependencyComposite.DependencyGroup;
@@ -28,6 +27,8 @@ import in.oneton.idea.spring.assistant.plugin.initializr.metadata.io.spring.init
 import in.oneton.idea.spring.assistant.plugin.initializr.step.DependencyGroupAndDependency.DependencyGroupAndDependencyAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.coverage.gnu.trove.THashMap;
+import org.jetbrains.coverage.gnu.trove.THashSet;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -44,7 +45,6 @@ import java.util.Set;
 import static com.intellij.openapi.actionSystem.CommonShortcuts.getFind;
 import static com.intellij.openapi.util.text.StringUtil.isEmpty;
 import static com.intellij.openapi.wm.IdeFocusManager.getGlobalInstance;
-import static com.intellij.ui.IdeBorderFactory.createEmptyBorder;
 import static com.intellij.ui.components.JBList.createDefaultListModel;
 import static com.intellij.ui.speedSearch.SpeedSearchUtil.applySpeedSearchHighlighting;
 import static in.oneton.idea.spring.assistant.plugin.initializr.misc.InitializrUtil.newCollectionComboBoxModel;
@@ -92,7 +92,7 @@ public class DependencySelection implements Disposable, DependencySelectionChang
 
   public void init(ProjectCreationRequest request) {
     // set empty border, because setting null doesn't always take effect
-    Border emptyBorder = createEmptyBorder();
+    Border emptyBorder = JBUI.Borders.empty();
     leftRightSeperator.setBorder(emptyBorder);
     groupChildSeperator.setBorder(emptyBorder);
     perGroupDependenciesAndDetailSeperator.setBorder(emptyBorder);

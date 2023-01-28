@@ -4,16 +4,15 @@ import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.ProcessingContext;
-import gnu.trove.THashSet;
 import in.oneton.idea.spring.assistant.plugin.suggestion.service.SuggestionService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.coverage.gnu.trove.THashSet;
 import org.jetbrains.yaml.psi.YAMLKeyValue;
 import org.jetbrains.yaml.psi.YAMLMapping;
 import org.jetbrains.yaml.psi.YAMLSequence;
@@ -44,7 +43,7 @@ class YamlCompletionProvider extends CompletionProvider<CompletionParameters> {
     Project project = element.getProject();
     Module module = findModule(element);
 
-    SuggestionService service = ServiceManager.getService(project, SuggestionService.class);
+    SuggestionService service = project.getService(SuggestionService.class);
 
     if ((module == null || !service.canProvideSuggestions(project, module))) {
       return;

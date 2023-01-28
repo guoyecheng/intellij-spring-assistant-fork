@@ -3,8 +3,6 @@ package in.oneton.idea.spring.assistant.plugin.suggestion.metadata;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiType;
-import gnu.trove.THashMap;
-import gnu.trove.THashSet;
 import in.oneton.idea.spring.assistant.plugin.misc.PsiCustomUtil;
 import in.oneton.idea.spring.assistant.plugin.suggestion.Suggestion;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNode;
@@ -22,6 +20,8 @@ import lombok.ToString;
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.coverage.gnu.trove.THashMap;
+import org.jetbrains.coverage.gnu.trove.THashSet;
 
 import javax.annotation.Nullable;
 import java.util.Collection;

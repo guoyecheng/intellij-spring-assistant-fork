@@ -6,7 +6,6 @@ import com.intellij.ui.ColoredTableCellRenderer;
 import com.intellij.ui.TableSpeedSearch;
 import com.intellij.ui.TableUtil;
 import com.intellij.ui.table.JBTable;
-import gnu.trove.THashSet;
 import in.oneton.idea.spring.assistant.plugin.initializr.ProjectCreationRequest;
 import in.oneton.idea.spring.assistant.plugin.initializr.metadata.InitializerMetadata.DependencyComposite.DependencyGroup;
 import in.oneton.idea.spring.assistant.plugin.initializr.metadata.InitializerMetadata.DependencyComposite.DependencyGroup.Dependency;
@@ -14,6 +13,7 @@ import in.oneton.idea.spring.assistant.plugin.initializr.metadata.io.spring.init
 import in.oneton.idea.spring.assistant.plugin.initializr.step.DependencySelection.VersionUpdateListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.coverage.gnu.trove.THashSet;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -76,7 +76,7 @@ public class PerGroupDependencyTableModel extends AbstractTableModel
     TableColumnModel columnModel = perGroupDependencyTable.getColumnModel();
     columnModel.setColumnMargin(0);
     TableColumn checkBoxColumn = columnModel.getColumn(CHECKBOX_COL_INDEX);
-    TableUtil.setupCheckboxColumn(checkBoxColumn);
+    TableUtil.setupCheckboxColumn(checkBoxColumn , 0);  //      setupCheckboxColumn(checkBoxColumn);
     checkBoxColumn.setCellRenderer(new BooleanTableCellRenderer());
     TableColumn dependencyColumn = columnModel.getColumn(DEPENDENCY_NAME_COL_INDEX);
     dependencyColumn.setCellRenderer(new ColoredTableCellRenderer() {

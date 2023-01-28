@@ -48,7 +48,7 @@ public class GradleReindexingProjectDataService
               + project.getName()));
       DumbService.getInstance(project).smartInvokeLater(() -> {
         log.debug("Will attempt to trigger indexing for project " + project.getName());
-        SuggestionService service = ServiceManager.getService(project, SuggestionService.class);
+        SuggestionService service = project.getService(SuggestionService.class);
 
         try {
           Module[] validModules = stream(modelsProvider.getModules()).filter(module -> {

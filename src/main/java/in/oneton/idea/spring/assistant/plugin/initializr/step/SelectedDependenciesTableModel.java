@@ -73,7 +73,7 @@ public class SelectedDependenciesTableModel extends AbstractTableModel
     });
 
     TableColumn deleteIconColumn = columnModel.getColumn(DELETE_ICON_INDEX);
-    TableUtil.setupCheckboxColumn(deleteIconColumn);
+    TableUtil.setupCheckboxColumn(dependencyColumn , 0); //setupCheckboxColumn(deleteIconColumn);
     deleteIconColumn.setCellRenderer(new InplaceButtonTableCellRenderer());
 
     selectedDependencies.getSelectionModel().addListSelectionListener(e -> {

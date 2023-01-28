@@ -1,5 +1,6 @@
 package in.oneton.idea.spring.assistant.plugin.misc;
 
+import com.intellij.application.options.CodeStyle;
 import com.intellij.codeInsight.completion.InsertionContext;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.util.text.StringUtil;
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static com.intellij.codeInsight.completion.CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED;
-import static com.intellij.codeInsight.documentation.DocumentationManager.createHyperlink;
+import static com.intellij.codeInsight.documentation.DocumentationManagerUtil.createHyperlink;
 import static com.intellij.openapi.util.text.StringUtil.containsChar;
 import static com.intellij.openapi.util.text.StringUtil.endsWithChar;
 import static com.intellij.openapi.util.text.StringUtil.isNotEmpty;
@@ -83,7 +84,7 @@ public class GenericUtil {
 
   @NotNull
   public static String getCodeStyleIntent(final InsertionContext insertionContext) {
-    final CodeStyleSettings currentSettings = CodeStyleSettingsManager.getSettings(insertionContext.getProject());
+    final CodeStyleSettings currentSettings = CodeStyle.getSettings(insertionContext.getProject());
     final CommonCodeStyleSettings.IndentOptions indentOptions =
             currentSettings.getIndentOptions(insertionContext.getFile().getFileType());
 

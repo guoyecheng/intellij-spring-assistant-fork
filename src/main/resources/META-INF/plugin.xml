@@ -1,10 +1,10 @@
 <idea-plugin url="https://github.com/cheng6563/intellij-spring-assistant">
 
     <id>in.1ton.idea.spring.assistant.plugin</id>
-    <name>Spring Assistant</name>
+    <name>Spring boot Assistant helper</name>
     <!-- Will be auto populated by plugin -->
-    <vendor email="hab852110@hotmail.com" url="https://github.com/cheng6563">
-        cheng6563
+    <vendor email="pangerick@163.com" url="https://github.com/cheng6563">
+        lingfengerick
     </vendor>
 
     <!-- Will be auto populated by plugin -->
@@ -37,6 +37,7 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
+        <backgroundPostStartupActivity implementation="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectStartupActivity" />
         <completion.contributor language="yaml"
                                 implementationClass="in.oneton.idea.spring.assistant.plugin.suggestion.completion.YamlCompletionContributor"/>
 
@@ -67,7 +68,6 @@
                 builderClass="in.oneton.idea.spring.assistant.plugin.initializr.InitializrModuleBuilder"
                 order="last"/>
         <gotoDeclarationHandler implementation="in.oneton.idea.spring.assistant.plugin.suggestion.handler.YamlGotoJavaHandler"/>
-
     </extensions>
     <applicationListeners>
         <!-- CompilationStatusListener doesn't seem to work properly, use BuildManagerListener instead. -->
@@ -75,9 +75,11 @@
                   topic="com.intellij.openapi.compiler.CompilationStatusListener"/>-->
         <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.BuildReIndexListener"
                   topic="com.intellij.compiler.server.BuildManagerListener"/>
+<!--        <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectOpenCloseListener"-->
+<!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
 
-        <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectOpenCloseListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+<!--        <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectStartupActivity"-->
+<!--                  topic="com.intellij.openapi.startup.StartupActivity"/>-->
     </applicationListeners>
 
     <!--<project-components>

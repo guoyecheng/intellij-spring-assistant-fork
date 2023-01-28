@@ -136,13 +136,13 @@ public class ProjectDetails {
     // for the cases where the user is trying to add module into an existing project
     if (project != null && project.isInitialized()) {
       boolean rootProjectIsGradle =
-          findFileUnderRootInModule(wizardContext.getProject().getBaseDir(), "build.gradle")
+          findFileUnderRootInModule(project.getProjectFile(), "build.gradle")
               != null;
       if (rootProjectIsGradle) {
         defaultProjectTypeId = "gradle-project";
       } else {
         boolean rootProjectIsMaven =
-            findFileUnderRootInModule(wizardContext.getProject().getBaseDir(), "pom.xml") != null;
+            findFileUnderRootInModule(project.getProjectFile(), "pom.xml") != null;
         if (rootProjectIsMaven) {
           defaultProjectTypeId = "maven-project";
         }

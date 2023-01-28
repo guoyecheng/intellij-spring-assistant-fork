@@ -2,6 +2,7 @@ package in.oneton.idea.spring.assistant.plugin.suggestion.metadata.json;
 
 import com.google.gson.annotations.SerializedName;
 import com.intellij.codeInsight.documentation.DocumentationManager;
+import com.intellij.codeInsight.documentation.DocumentationManagerUtil;
 import in.oneton.idea.spring.assistant.plugin.misc.GenericUtil;
 import in.oneton.idea.spring.assistant.plugin.suggestion.Suggestion;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNode;
@@ -71,8 +72,7 @@ public class SpringConfigurationMetadataGroup {
       // lets show declaration point only if does not match the type
       if (!sourceTypeInJavadocFormat.equals(removeGenerics(className))) {
         StringBuilder buffer = new StringBuilder();
-        DocumentationManager
-            .createHyperlink(buffer, methodForDocumentationNavigation(sourceTypeInJavadocFormat),
+        DocumentationManagerUtil.createHyperlink(buffer, methodForDocumentationNavigation(sourceTypeInJavadocFormat),
                 sourceTypeInJavadocFormat, false);
         sourceTypeInJavadocFormat = buffer.toString();
         builder.append("<p>Declared at ").append(sourceTypeInJavadocFormat).append("</p>");

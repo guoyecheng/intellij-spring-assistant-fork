@@ -16,7 +16,7 @@ import java.util.Set;
 
 public interface SuggestionService {
   static SuggestionService getInstance(@NotNull Project project) {
-    return ServiceManager.getService(project, SuggestionService.class);
+    return project.getService(SuggestionService.class);
   }
 
   void init(Project project) throws IOException;

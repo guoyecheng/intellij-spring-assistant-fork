@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static com.intellij.openapi.util.io.FileUtil.copy;
 import static com.intellij.openapi.util.io.FileUtil.createTempFile;
@@ -57,7 +59,7 @@ class InitializerDownloader {
     indicator.setText("Please wait ...");
     File targetExtractionDir = new File(requireNonNull(builder.getContentEntryPath()));
     if (download.zip) {
-      extract(tempFile, targetExtractionDir, null);
+      extract(Paths.get(tempFile.getPath()), Paths.get(targetExtractionDir.getPath()), null);
       markAsExecutable(targetExtractionDir, "gradlew");
       markAsExecutable(targetExtractionDir, "mvnw");
     } else {

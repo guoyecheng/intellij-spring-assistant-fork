@@ -1,7 +1,6 @@
 package in.oneton.idea.spring.assistant.plugin.suggestion.metadata;
 
 import com.intellij.openapi.module.Module;
-import gnu.trove.THashSet;
 import in.oneton.idea.spring.assistant.plugin.suggestion.Suggestion;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNode;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNodeType;
@@ -15,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.coverage.gnu.trove.THashSet;
 
 import javax.annotation.Nullable;
 import java.util.List;

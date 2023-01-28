@@ -2,6 +2,7 @@ package in.oneton.idea.spring.assistant.plugin.suggestion.completion;
 
 import com.intellij.lang.Language;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
+import com.intellij.openapi.components.ComponentManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.module.Module;
@@ -9,6 +10,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.impl.light.LightElement;
 import in.oneton.idea.spring.assistant.plugin.suggestion.Suggestion;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNode;
@@ -66,58 +68,122 @@ public class YamlDocumentationProvider extends AbstractDocumentationProvider {
     return super.getDocumentationElementForLookupItem(psiManager, object, element);
   }
 
-  @Nullable
-  @Override
-  public PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file,
-      @Nullable PsiElement element) {
-    if (element != null) {
-      List<SuggestionNode> matchedNodesFromRootTillLeaf;
-      boolean requestedForTargetValue = false;
 
-      SuggestionService suggestionService =
-          ServiceManager.getService(element.getProject(), SuggestionService.class);
+    /**
+     * Override this method if standard platform's choice for target PSI element to show documentation for (element either declared or
+     * referenced at target offset) isn't suitable for your language. For example, it could be a keyword where there's no
+     * {@link PsiReference}, but for which users might benefit from context help.
+     *
+     * @param editor
+     * @param file
+     * @param element the leaf PSI element in {@code file} at target offset
+     * @param targetOffset   equals to caret offset for 'Quick Documentation' action, and to offset under mouse cursor for documentation shown
+     *                       on mouse hover
+     * @return target PSI element to show documentation for, or {@code null} if it should be determined by standard platform's logic (default
+     * behaviour)
+     */
+    @Override
+    public @Nullable PsiElement getCustomDocumentationElement(@NotNull final Editor editor, @NotNull final PsiFile file, @Nullable final PsiElement element, final int targetOffset) {
+        if (element != null) {
+            List<SuggestionNode> matchedNodesFromRootTillLeaf;
+            boolean requestedForTargetValue = false;
 
-      Project project = element.getProject();
-      Module module = findModule(element);
+            SuggestionService suggestionService = element.getProject().getService(SuggestionService.class);
+//          ServiceManager.getService(element.getProject(), SuggestionService.class);
 
-      List<String> ancestralKeys = null;
-      PsiElement elementContext = element.getContext();
-      PsiElement context = elementContext;
-      do {
-        if (context instanceof YAMLKeyValue) {
-          if (ancestralKeys == null) {
-            ancestralKeys = new ArrayList<>();
-          }
-          ancestralKeys.add(0, truncateIdeaDummyIdentifier(((YAMLKeyValue) context).getKeyText()));
+            Project project = element.getProject();
+            Module module = findModule(element);
+
+            List<String> ancestralKeys = null;
+            PsiElement elementContext = element.getContext();
+            PsiElement context = elementContext;
+            do {
+                if (context instanceof YAMLKeyValue) {
+                    if (ancestralKeys == null) {
+                        ancestralKeys = new ArrayList<>();
+                    }
+                    ancestralKeys.add(0, truncateIdeaDummyIdentifier(((YAMLKeyValue) context).getKeyText()));
+                }
+                context = requireNonNull(context).getParent();
+            } while (context != null);
+
+            String value = null;
+            if (elementContext instanceof YAMLKeyValue) {
+                value = truncateIdeaDummyIdentifier(((YAMLKeyValue) elementContext).getKeyText());
+                requestedForTargetValue = false;
+            } else if (elementContext instanceof YAMLPlainTextImpl) {
+                value = truncateIdeaDummyIdentifier(element.getText());
+                requestedForTargetValue = true;
+            }
+
+            if (ancestralKeys != null) {
+                matchedNodesFromRootTillLeaf =
+                        suggestionService.findMatchedNodesRootTillEnd(project, module, ancestralKeys);
+                if (matchedNodesFromRootTillLeaf != null) {
+                    SuggestionNode target =
+                            matchedNodesFromRootTillLeaf.get(matchedNodesFromRootTillLeaf.size() - 1);
+                    String targetNavigationPathDotDelimited =
+                            matchedNodesFromRootTillLeaf.stream().map(v -> v.getNameForDocumentation(module))
+                                    .collect(joining("."));
+                    return new DocumentationProxyElement(file.getManager(), file.getLanguage(),
+                            targetNavigationPathDotDelimited, target, requestedForTargetValue, value);
+                }
+            }
         }
-        context = requireNonNull(context).getParent();
-      } while (context != null);
-
-      String value = null;
-      if (elementContext instanceof YAMLKeyValue) {
-        value = truncateIdeaDummyIdentifier(((YAMLKeyValue) elementContext).getKeyText());
-        requestedForTargetValue = false;
-      } else if (elementContext instanceof YAMLPlainTextImpl) {
-        value = truncateIdeaDummyIdentifier(element.getText());
-        requestedForTargetValue = true;
-      }
-
-      if (ancestralKeys != null) {
-        matchedNodesFromRootTillLeaf =
-            suggestionService.findMatchedNodesRootTillEnd(project, module, ancestralKeys);
-        if (matchedNodesFromRootTillLeaf != null) {
-          SuggestionNode target =
-              matchedNodesFromRootTillLeaf.get(matchedNodesFromRootTillLeaf.size() - 1);
-          String targetNavigationPathDotDelimited =
-              matchedNodesFromRootTillLeaf.stream().map(v -> v.getNameForDocumentation(module))
-                  .collect(joining("."));
-          return new DocumentationProxyElement(file.getManager(), file.getLanguage(),
-              targetNavigationPathDotDelimited, target, requestedForTargetValue, value);
-        }
-      }
+        return super.getCustomDocumentationElement(editor, file, element, targetOffset);
     }
-    return super.getCustomDocumentationElement(editor, file, element);
-  }
+//    @Nullable
+//  @Override
+//  public PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file,
+//      @Nullable PsiElement element) {
+//    if (element != null) {
+//      List<SuggestionNode> matchedNodesFromRootTillLeaf;
+//      boolean requestedForTargetValue = false;
+//
+//      SuggestionService suggestionService = element.getProject().getService(SuggestionService.class);
+////          ServiceManager.getService(element.getProject(), SuggestionService.class);
+//
+//      Project project = element.getProject();
+//      Module module = findModule(element);
+//
+//      List<String> ancestralKeys = null;
+//      PsiElement elementContext = element.getContext();
+//      PsiElement context = elementContext;
+//      do {
+//        if (context instanceof YAMLKeyValue) {
+//          if (ancestralKeys == null) {
+//            ancestralKeys = new ArrayList<>();
+//          }
+//          ancestralKeys.add(0, truncateIdeaDummyIdentifier(((YAMLKeyValue) context).getKeyText()));
+//        }
+//        context = requireNonNull(context).getParent();
+//      } while (context != null);
+//
+//      String value = null;
+//      if (elementContext instanceof YAMLKeyValue) {
+//        value = truncateIdeaDummyIdentifier(((YAMLKeyValue) elementContext).getKeyText());
+//        requestedForTargetValue = false;
+//      } else if (elementContext instanceof YAMLPlainTextImpl) {
+//        value = truncateIdeaDummyIdentifier(element.getText());
+//        requestedForTargetValue = true;
+//      }
+//
+//      if (ancestralKeys != null) {
+//        matchedNodesFromRootTillLeaf =
+//            suggestionService.findMatchedNodesRootTillEnd(project, module, ancestralKeys);
+//        if (matchedNodesFromRootTillLeaf != null) {
+//          SuggestionNode target =
+//              matchedNodesFromRootTillLeaf.get(matchedNodesFromRootTillLeaf.size() - 1);
+//          String targetNavigationPathDotDelimited =
+//              matchedNodesFromRootTillLeaf.stream().map(v -> v.getNameForDocumentation(module))
+//                  .collect(joining("."));
+//          return new DocumentationProxyElement(file.getManager(), file.getLanguage(),
+//              targetNavigationPathDotDelimited, target, requestedForTargetValue, value);
+//        }
+//      }
+//    }
+//    return super.getCustomDocumentationElement(editor, file, element);
+//  }
 
   @ToString(of = "nodeNavigationPathDotDelimited")
   private static class DocumentationProxyElement extends LightElement {

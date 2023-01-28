@@ -5,6 +5,9 @@ import com.vladsch.flexmark.util.ast.Document
 buildscript {
     repositories {
         mavenLocal()
+        maven {
+            url 'https://maven.aliyun.com/repository/public'
+        }
         mavenCentral()
     }
     dependencies {
@@ -15,15 +18,17 @@ buildscript {
 plugins {
     id 'java'
     id 'idea'
-    id 'org.jetbrains.intellij' version '1.6.0'
+    id 'org.jetbrains.intellij' version '1.12.0'
 }
 
 
 group = 'in.oneton.idea.spring'
 version = '1.0.6'
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
@@ -31,6 +36,9 @@ compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 
 repositories {
     mavenLocal()
+    maven {
+        url 'https://maven.aliyun.com/repository/public'
+    }
     mavenCentral()
 }
 
@@ -64,26 +72,26 @@ clean.doFirst {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     type = 'IC'
-    version = '2022.2.2'
+    version = '2022.3'
     pluginName = 'intellij-spring-assistant'
     plugins = ['java', 'properties', 'yaml', 'maven', 'gradle']
     updateSinceUntilBuild = false
 }
 
-task {
-    publishPlugin {
-        token System.getenv('IJ_PLUGIN_TOKEN')
-        //    username System.getProperty('ij_plugin_portal_login')
-        //    password System.getProperty('ij_plugin_portal_password')
-        channels 'eap', 'nightly', 'default'
-    }
+tasks{
+//    publishPlugin {
+//        token System.getenv('IJ_PLUGIN_TOKEN')
+//        //    username System.getProperty('ij_plugin_portal_login')
+//        //    password System.getProperty('ij_plugin_portal_password')
+//        channels 'eap', 'nightly', 'default'
+//    }
 
 
     patchPluginXml {
-        sinceBuild '203.1.0'
-        untilBuild '222.*'
-        pluginDescription readmeXmlAsHtml()
-        changeNotes changeLogAsHtml()
+        sinceBuild = '221'
+        untilBuild = '223.*'
+        pluginDescription = provider {readmeXmlAsHtml()}
+        changeNotes = provider {changeLogAsHtml()}
     }
 }
 

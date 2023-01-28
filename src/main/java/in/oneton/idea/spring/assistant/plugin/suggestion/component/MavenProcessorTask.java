@@ -32,7 +32,7 @@ public class MavenProcessorTask implements MavenProjectsProcessorTask {
       log.debug("Will attempt to trigger indexing for project " + project.getName());
 
       try {
-        SuggestionService service = ServiceManager.getService(project, SuggestionService.class);
+        SuggestionService service = project.getService(SuggestionService.class);
 
         if (!service.canProvideSuggestions(project, module)) {
           service.reindex(project, module);

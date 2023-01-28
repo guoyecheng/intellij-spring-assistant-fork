@@ -1,11 +1,11 @@
 package in.oneton.idea.spring.assistant.plugin.suggestion.metadata.json;
 
-import gnu.trove.THashMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
+import org.jetbrains.coverage.gnu.trove.THashMap;
 
 import javax.annotation.Nullable;
 import java.util.Collection;

@@ -37,6 +37,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -76,8 +77,8 @@ public class SuggestionServiceImpl implements SuggestionService {
     private volatile boolean indexingInProgress;
 
     SuggestionServiceImpl() {
-        moduleNameToSeenContainerPathToContainerInfo = new THashMap<>();
-        moduleNameToRootSearchIndex = new THashMap<>();
+        moduleNameToSeenContainerPathToContainerInfo = new HashMap<>();
+        moduleNameToRootSearchIndex = new HashMap<>();
     }
 
     private static String[] toSanitizedPathSegments(String element) {
@@ -356,7 +357,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                             querySegmentPrefixes, querySegmentPrefixStartIndex);
             if (matchedSuggestions != null) {
                 if (suggestions == null) {
-                    suggestions = new THashSet<>();
+                    suggestions = new HashSet<>();
                 }
                 suggestions.addAll(matchedSuggestions);
             }
@@ -389,7 +390,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                 .flatMap(MetadataContainerInfo::getContainerArchiveOrFileRefs).collect(toSet());
         Set<String> knownContainerPathSet;
         try {
-            knownContainerPathSet = new THashSet<>(seenContainerPathToContainerInfo.keySet());
+            knownContainerPathSet = new HashSet<>(seenContainerPathToContainerInfo.keySet());
         } catch (NoSuchElementException ignored){
             //fallback using java.util.HastSet
             knownContainerPathSet = new HashSet<>(seenContainerPathToContainerInfo.keySet());
@@ -439,7 +440,7 @@ public class SuggestionServiceImpl implements SuggestionService {
                                List<MetadataContainerInfo> projectContainersToRemove, Module module) {
 
         final var moduleSeenContainerPathToSeenContainerInfo = moduleNameToSeenContainerPathToContainerInfo
-                .computeIfAbsent(module.getName(), k -> new THashMap<>());
+                .computeIfAbsent(module.getName(), k -> new HashMap<>());
 
         var moduleRootSearchIndex = moduleNameToRootSearchIndex.get(module.getName());
         if (moduleRootSearchIndex == null) {
