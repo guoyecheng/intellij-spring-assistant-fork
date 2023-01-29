@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/ErickPang/intellij-spring-assistant">
 
     <id>in.1ton.idea.spring.assistant.plugin</id>
-    <name>Spring boot helper</name>
+    <name>Spring-Helper</name>
     <!-- Will be auto populated by plugin -->
     <vendor email="pangerick@163.com" url="https://github.com/ErickPang/">
         lingfengerick

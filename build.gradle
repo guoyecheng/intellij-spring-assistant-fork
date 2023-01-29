@@ -72,7 +72,7 @@ clean.doFirst {
 intellij {
     type = 'IC'
     version = '2022.3'
-    pluginName = 'spring-boot-helper'
+    pluginName = 'intellij-spring-helper'
     plugins = ['java', 'properties', 'yaml', 'maven', 'gradle']
     updateSinceUntilBuild = false
 }
