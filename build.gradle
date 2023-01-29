@@ -64,7 +64,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
 }
-
 clean.doFirst {
     delete 'build', 'out'
 }
