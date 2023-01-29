@@ -8,5 +8,4 @@ pluginManagement {
     gradlePluginPortal()
   }
 }
-
 rootProject.name = 'intellij-spring-assistant'

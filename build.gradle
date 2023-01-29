@@ -85,8 +85,6 @@ tasks{
 //        //    password System.getProperty('ij_plugin_portal_password')
 //        channels 'eap', 'nightly', 'default'
 //    }
-
-
     patchPluginXml {
         sinceBuild = '221'
         untilBuild = '223.*'
