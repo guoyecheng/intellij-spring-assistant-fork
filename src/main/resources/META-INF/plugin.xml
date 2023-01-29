@@ -1,9 +1,9 @@
-<idea-plugin url="https://github.com/cheng6563/intellij-spring-assistant">
+<idea-plugin url="https://github.com/ErickPang/intellij-spring-assistant">
 
     <id>in.1ton.idea.spring.assistant.plugin</id>
     <name>Spring boot helper</name>
     <!-- Will be auto populated by plugin -->
-    <vendor email="pangerick@163.com" url="https://github.com/cheng6563">
+    <vendor email="pangerick@163.com" url="https://github.com/ErickPang/">
         lingfengerick
     </vendor>
 
@@ -13,13 +13,13 @@
               <h3>Autocomplete wizard for configuration property with spring</h3>
               application.yml；
 
-              Fix: IC-2021.3 EAP
+              Fix: IC-2022.3 EAP
           ]]>]
     </description>
     <change-notes>
         <![CDATA[
             Fix:
-            - test: IntelliJ IDEA 2021.3 EAP (Community Edition) Build #IC-213.5281.15
+            - test: IntelliJ IDEA 2022.3 EAP (Community Edition) Build #IC-213.5281.15
           ]]>]
     </change-notes>
 
@@ -77,9 +77,6 @@
                   topic="com.intellij.compiler.server.BuildManagerListener"/>
 <!--        <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectOpenCloseListener"-->
 <!--                  topic="com.intellij.openapi.project.ProjectManagerListener"/>-->
-
-<!--        <listener class="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectStartupActivity"-->
-<!--                  topic="com.intellij.openapi.startup.StartupActivity"/>-->
     </applicationListeners>
 
     <!--<project-components>
