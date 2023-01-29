@@ -1,7 +1,5 @@
 package in.oneton.idea.spring.assistant.plugin.initializr;
 
-import com.intellij.ide.projectWizard.NewProjectNameLocationSettings;
-import com.intellij.ide.projectWizard.ProjectSettingsStep;
 import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleNameLocationSettings;
@@ -82,14 +80,14 @@ public class InitializrModuleBuilder extends ModuleBuilder {
   @Override
   @Nullable
   public ModuleWizardStep modifySettingsStep(@NotNull final SettingsStep settingsStep) {
-//      NewProjectNameLocationSettings newProjectNameLocationSettings = (NewProjectNameLocationSettings) settingsStep.getModuleNameLocationSettings();
-    final JTextField moduleNameField = settingsStep.getModuleNameField();
-    if (moduleNameField != null) {
-      moduleNameField.setText(this.request.getArtifactId());
-    }
-//      if (newProjectNameLocationSettings != null) {
-//          newProjectNameLocationSettings.setModuleName(this.request.getArtifactId());
-//      }
+      final ModuleNameLocationSettings moduleNameLocationSettings = settingsStep.getModuleNameLocationSettings();
+//    final JTextField moduleNameField = settingsStep.getModuleNameField();
+//    if (moduleNameField != null) {
+//      moduleNameField.setText(this.request.getArtifactId());
+//    }
+      if (moduleNameLocationSettings != null) {
+          moduleNameLocationSettings.setModuleName(this.request.getArtifactId());
+      }
     return super.modifySettingsStep(settingsStep);
   }
 

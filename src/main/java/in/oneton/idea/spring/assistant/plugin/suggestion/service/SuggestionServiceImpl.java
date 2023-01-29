@@ -28,6 +28,7 @@ import in.oneton.idea.spring.assistant.plugin.suggestion.metadata.json.SpringCon
 import org.apache.commons.collections4.Trie;
 import org.apache.commons.collections4.trie.PatriciaTrie;
 import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -512,58 +513,60 @@ public class SuggestionServiceImpl implements SuggestionService {
                                       SpringConfigurationMetadata springConfigurationMetadata, String containerArchiveOrFileRef) {
         List<SpringConfigurationMetadataProperty> properties =
                 springConfigurationMetadata.getProperties();
-        properties.sort(comparing(SpringConfigurationMetadataProperty::getName));
-        for (SpringConfigurationMetadataProperty property : properties) {
-            String[] pathSegments = toSanitizedPathSegments(property.getName());
-            String[] rawPathSegments = toRawPathSegments(property.getName());
-            MetadataSuggestionNode closestMetadata =
-                    findDeepestMetadataMatch(rootSearchIndex, pathSegments, false);
+        if (ObjectUtils.isNotEmpty(properties)){
+            properties.sort(comparing(SpringConfigurationMetadataProperty::getName));
+            for (SpringConfigurationMetadataProperty property : properties) {
+                String[] pathSegments = toSanitizedPathSegments(property.getName());
+                String[] rawPathSegments = toRawPathSegments(property.getName());
+                MetadataSuggestionNode closestMetadata =
+                        findDeepestMetadataMatch(rootSearchIndex, pathSegments, false);
 
-            int startIndex;
-            if (closestMetadata == null) { // path does not have a corresponding root element
-                boolean onlyRootSegmentExists = pathSegments.length == 1;
-                if (onlyRootSegmentExists) {
-                    closestMetadata = MetadataPropertySuggestionNode
-                            .newInstance(rawPathSegments[0], property, null, containerArchiveOrFileRef);
+                int startIndex;
+                if (closestMetadata == null) { // path does not have a corresponding root element
+                    boolean onlyRootSegmentExists = pathSegments.length == 1;
+                    if (onlyRootSegmentExists) {
+                        closestMetadata = MetadataPropertySuggestionNode
+                                .newInstance(rawPathSegments[0], property, null, containerArchiveOrFileRef);
+                    } else {
+                        closestMetadata = MetadataNonPropertySuggestionNode
+                                .newInstance(rawPathSegments[0], null, containerArchiveOrFileRef);
+                    }
+                    rootSearchIndex.put(pathSegments[0], closestMetadata);
+
+                    // since we already handled the root level item, let addChildren start from index 1 of pathSegments
+                    startIndex = 1;
                 } else {
-                    closestMetadata = MetadataNonPropertySuggestionNode
-                            .newInstance(rawPathSegments[0], null, containerArchiveOrFileRef);
+                    startIndex = closestMetadata.numOfHopesToRoot() + 1;
                 }
-                rootSearchIndex.put(pathSegments[0], closestMetadata);
 
-                // since we already handled the root level item, let addChildren start from index 1 of pathSegments
-                startIndex = 1;
-            } else {
-                startIndex = closestMetadata.numOfHopesToRoot() + 1;
-            }
+                boolean haveMoreSegmentsLeft = startIndex < rawPathSegments.length;
 
-            boolean haveMoreSegmentsLeft = startIndex < rawPathSegments.length;
-
-            if (haveMoreSegmentsLeft) {
-                if (!closestMetadata.isProperty()) {
-                    MetadataNonPropertySuggestionNode.class.cast(closestMetadata)
-                            .addChildren(property, rawPathSegments, startIndex, containerArchiveOrFileRef);
+                if (haveMoreSegmentsLeft) {
+                    if (!closestMetadata.isProperty()) {
+                        MetadataNonPropertySuggestionNode.class.cast(closestMetadata)
+                                .addChildren(property, rawPathSegments, startIndex, containerArchiveOrFileRef);
+                    } else {
+                        log.warn("Detected conflict between a new group & existing property for suggestion path "
+                                + closestMetadata.getPathFromRoot(module)
+                                + ". Ignoring property. Existing non property node belongs to (" + closestMetadata
+                                .getBelongsTo().stream().collect(joining(",")) + "), New property belongs to "
+                                + containerArchiveOrFileRef);
+                    }
                 } else {
-                    log.warn("Detected conflict between a new group & existing property for suggestion path "
-                            + closestMetadata.getPathFromRoot(module)
-                            + ". Ignoring property. Existing non property node belongs to (" + closestMetadata
-                            .getBelongsTo().stream().collect(joining(",")) + "), New property belongs to "
-                            + containerArchiveOrFileRef);
-                }
-            } else {
-                if (!closestMetadata.isProperty()) {
-                    log.warn(
-                            "Detected conflict between a new metadata property & existing non property node for suggestion path "
-                                    + closestMetadata.getPathFromRoot(module)
-                                    + ". Ignoring property. Existing non property node belongs to (" + closestMetadata
-                                    .getBelongsTo().stream().collect(joining(",")) + "), New property belongs to "
-                                    + containerArchiveOrFileRef);
-                } else {
-                    closestMetadata.addRefCascadeTillRoot(containerArchiveOrFileRef);
-                    log.debug("Detected a duplicate metadata property for suggestion path " + closestMetadata
-                            .getPathFromRoot(module) + ". Ignoring property. Existing property belongs to ("
-                            + closestMetadata.getBelongsTo().stream().collect(joining(","))
-                            + "), New property belongs to " + containerArchiveOrFileRef);
+                    if (!closestMetadata.isProperty()) {
+                        log.warn(
+                                "Detected conflict between a new metadata property & existing non property node for suggestion path "
+                                        + closestMetadata.getPathFromRoot(module)
+                                        + ". Ignoring property. Existing non property node belongs to (" + closestMetadata
+                                        .getBelongsTo().stream().collect(joining(",")) + "), New property belongs to "
+                                        + containerArchiveOrFileRef);
+                    } else {
+                        closestMetadata.addRefCascadeTillRoot(containerArchiveOrFileRef);
+                        log.debug("Detected a duplicate metadata property for suggestion path " + closestMetadata
+                                .getPathFromRoot(module) + ". Ignoring property. Existing property belongs to ("
+                                + closestMetadata.getBelongsTo().stream().collect(joining(","))
+                                + "), New property belongs to " + containerArchiveOrFileRef);
+                    }
                 }
             }
         }
