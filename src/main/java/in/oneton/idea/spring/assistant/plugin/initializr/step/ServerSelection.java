@@ -92,10 +92,11 @@ public class ServerSelection {
 
   public void updateDataModel() {
     if (defaultRadioBtn.isSelected()) {
-      request.setServerUrl(SPRING_IO_DEFAULT_INITIALIZR_SERVER_URL);
+        request.setServerUrl(SPRING_IO_DEFAULT_INITIALIZR_SERVER_URL);
 //    } else if (dataflowRadioBtn.isSelected()) {
 //      request.setServerUrl(SPRING_IO_DATAFLOW_INITIALIZR_SERVER_URL);
-//    } else {
+//    }
+    }else {
       String customRawUrl = customTextFieldWithHistory.getText().trim();
       // lets add http if the url is not specified
       if (!customRawUrl.startsWith("http") && !customRawUrl.startsWith("https")) {
