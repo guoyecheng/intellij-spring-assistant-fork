@@ -71,7 +71,6 @@ public class ProjectDetailsStep extends ModuleWizardStep implements Disposable {
                     } catch (IOException e) {
                       throw new IOException(createErrorMessage(e, httpRequest, false), e);
                     }
-
                     GsonBuilder builder = new GsonBuilder();
                     builder.registerTypeAdapter(VersionRange.class, new VersionRangeDeserializer());
                     builder.registerTypeAdapter(DEPENDENCY_LINKS_LIST_TYPE,

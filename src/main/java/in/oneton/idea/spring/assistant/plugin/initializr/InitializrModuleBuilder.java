@@ -139,12 +139,12 @@ public class InitializrModuleBuilder extends ModuleBuilder {
   @Nullable
   @Override
   public String getBuilderId() {
-    return "Spring Boot/Cloud Dataflow Initializr";
+    return "Spring Boot Initializr";
   }
 
   @Override
   public String getDescription() {
-    return "Bootstrap spring applications using <b>spring boot</b> & <b>spring cloud dataflow</b> starters";
+    return "Bootstrap spring applications using <b>spring boot</b>  starters";
   }
 
   @Override

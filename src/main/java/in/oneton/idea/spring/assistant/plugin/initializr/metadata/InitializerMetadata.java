@@ -161,18 +161,24 @@ public class InitializerMetadata {
 
 
         @Data
-        @ToString(onlyExplicitlyIncluded = true)
         @EqualsAndHashCode(onlyExplicitlyIncluded = true)
         public static class ProjectType implements IdContainer {
 
             @EqualsAndHashCode.Include
             private String id;
 
-            @ToString.Include
             private String name;
 
             private String description;
             private String action;
+
+            /**
+             * fix combox name display short name when create new spring project ,like java version
+             */
+            @Override
+            public String toString() {
+                return name;
+            }
         }
     }
 
@@ -188,18 +194,23 @@ public class InitializerMetadata {
 
 
     @Data
-    @ToString(onlyExplicitlyIncluded = true)
     @EqualsAndHashCode(onlyExplicitlyIncluded = true)
     public static class IdAndName implements IdContainer {
 
         @EqualsAndHashCode.Include
         private String id;
 
-        @ToString.Include
         private String name;
 
         public Version parseIdAsVersion() {
             return Version.parse(id);
+        }
+        /**
+         * fix combox name display short name when create new spring project ,like java version
+         */
+        @Override
+        public String toString() {
+            return name;
         }
     }
 

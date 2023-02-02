@@ -23,7 +23,6 @@ public class ServerSelection {
       "https://start-scs.cfapps.io";
 
   private JBRadioButton defaultRadioBtn;
-  private JBRadioButton dataflowRadioBtn;
   private JBRadioButton customRadioBtn;
   private JPanel root;
   private TextFieldWithHistory customTextFieldWithHistory;
@@ -46,11 +45,10 @@ public class ServerSelection {
 
     ButtonGroup radioButtonGroup = new ButtonGroup();
     radioButtonGroup.add(defaultRadioBtn);
-    radioButtonGroup.add(dataflowRadioBtn);
+
     radioButtonGroup.add(customRadioBtn);
 
     defaultRadioBtn.addActionListener(e -> customTextFieldWithHistory.setEnabled(false));
-    dataflowRadioBtn.addActionListener(e -> customTextFieldWithHistory.setEnabled(false));
     customRadioBtn.addActionListener(e -> {
       customTextFieldWithHistory.setEnabled(true);
       customTextFieldWithHistory.requestFocus();
@@ -65,9 +63,9 @@ public class ServerSelection {
       case SPRING_IO_DEFAULT_INITIALIZR_SERVER_URL:
         defaultRadioBtn.doClick();
         break;
-      case SPRING_IO_DATAFLOW_INITIALIZR_SERVER_URL:
-        dataflowRadioBtn.doClick();
-        break;
+//      case SPRING_IO_DATAFLOW_INITIALIZR_SERVER_URL:
+//        dataflowRadioBtn.doClick();
+//        break;
       default:
         customRadioBtn.doClick();
         customTextFieldWithHistory.setTextAndAddToHistory(serverUrl);
@@ -95,9 +93,9 @@ public class ServerSelection {
   public void updateDataModel() {
     if (defaultRadioBtn.isSelected()) {
       request.setServerUrl(SPRING_IO_DEFAULT_INITIALIZR_SERVER_URL);
-    } else if (dataflowRadioBtn.isSelected()) {
-      request.setServerUrl(SPRING_IO_DATAFLOW_INITIALIZR_SERVER_URL);
-    } else {
+//    } else if (dataflowRadioBtn.isSelected()) {
+//      request.setServerUrl(SPRING_IO_DATAFLOW_INITIALIZR_SERVER_URL);
+//    } else {
       String customRawUrl = customTextFieldWithHistory.getText().trim();
       // lets add http if the url is not specified
       if (!customRawUrl.startsWith("http") && !customRawUrl.startsWith("https")) {
