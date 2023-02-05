@@ -23,7 +23,7 @@ plugins {
 
 
 group = 'in.oneton.idea.spring'
-version = '2023.1.1'
+version = '2023.1.2'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -71,7 +71,7 @@ clean.doFirst {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     type = 'IC'
-    version = '2022.3'
+    version = '231.6471-EAP-CANDIDATE-SNAPSHOT'
     pluginName = 'intellij-spring-helper'
     plugins = ['java', 'properties', 'yaml', 'maven', 'gradle']
     updateSinceUntilBuild = false
@@ -86,7 +86,7 @@ tasks{
 //    }
     patchPluginXml {
         sinceBuild = '221'
-        untilBuild = '223.*'
+        untilBuild = '231.*'
         pluginDescription = provider {readmeXmlAsHtml()}
         changeNotes = provider {changeLogAsHtml()}
     }
