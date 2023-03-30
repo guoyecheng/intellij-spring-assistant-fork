@@ -2,6 +2,7 @@ package in.oneton.idea.spring.assistant.plugin.suggestion.clazz;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiType;
+import com.intellij.psi.PsiTypes;
 import in.oneton.idea.spring.assistant.plugin.suggestion.Suggestion;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNode;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNodeType;
@@ -130,7 +131,7 @@ public class BooleanClassMetadata extends ClassMetadata {
     StringBuilder builder =
         new StringBuilder().append("<b>").append(nodeNavigationPathDotDelimited).append("</b>");
 
-    String classFqn = PsiType.BOOLEAN.getBoxedTypeName();
+    String classFqn = PsiTypes.booleanType().getBoxedTypeName();
     StringBuilder linkBuilder = new StringBuilder();
     createHyperlink(linkBuilder, classFqn, classFqn, false);
     builder.append(" (").append(linkBuilder.toString()).append(")");
@@ -154,7 +155,7 @@ public class BooleanClassMetadata extends ClassMetadata {
   @NotNull
   @Override
   public PsiType getPsiType(Module module) {
-    return PsiType.BOOLEAN;
+    return PsiTypes.booleanType();
   }
 
   private Stream<Boolean> getMatchStreamAfterExclusion(SortedMap<String, Boolean> prefixMap,
@@ -219,7 +220,7 @@ public class BooleanClassMetadata extends ClassMetadata {
       StringBuilder builder =
           new StringBuilder().append("<b>").append(nodeNavigationPathDotDelimited).append("</b>");
 
-      String classFqn = PsiType.BOOLEAN.getBoxedTypeName();
+      String classFqn = PsiTypes.booleanType().getBoxedTypeName();
       StringBuilder linkBuilder = new StringBuilder();
       createHyperlink(linkBuilder, classFqn, classFqn, false);
       builder.append(" (").append(linkBuilder.toString()).append(")");

@@ -2,6 +2,7 @@ package in.oneton.idea.spring.assistant.plugin.suggestion.clazz;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiType;
+import com.intellij.psi.PsiTypes;
 import in.oneton.idea.spring.assistant.plugin.suggestion.Suggestion;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNode;
 import in.oneton.idea.spring.assistant.plugin.suggestion.SuggestionNodeType;
@@ -177,19 +178,19 @@ public class DummyClassMetadata extends ClassMetadata {
   public PsiType getPsiType(Module module) {
     switch (nodeType) {
       case BYTE:
-        return PsiType.BYTE;
+        return PsiTypes.byteType();
       case SHORT:
-        return PsiType.SHORT;
+        return PsiTypes.shortType();
       case INT:
-        return PsiType.INT;
+        return PsiTypes.intType();
       case LONG:
-        return PsiType.LONG;
+        return PsiTypes.longType();
       case FLOAT:
-        return PsiType.FLOAT;
+        return PsiTypes.floatType();
       case DOUBLE:
-        return PsiType.DOUBLE;
+        return PsiTypes.doubleType();
       case CHAR:
-        return PsiType.CHAR;
+        return PsiTypes.charType();
       case STRING:
         return safeGetValidType(module, JAVA_LANG_STRING);
       case UNKNOWN_CLASS:

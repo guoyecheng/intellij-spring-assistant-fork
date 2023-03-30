@@ -21,6 +21,7 @@ import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiPrimitiveType;
 import com.intellij.psi.PsiType;
 import com.intellij.psi.PsiTypeParameter;
+import com.intellij.psi.PsiTypes;
 import com.intellij.psi.PsiWildcardType;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.CachedValue;
@@ -214,28 +215,28 @@ public class PsiCustomUtil {
 
     @Nullable
     private static SuggestionNodeType getSuggestionNodeTypeForPrimitive(PsiType type) {
-        if (PsiType.BOOLEAN.equals(type) || PsiType.BOOLEAN
+        if (PsiTypes.booleanType().equals(type) || PsiTypes.booleanType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return BOOLEAN;
-        } else if (PsiType.BYTE.equals(type) || PsiType.BYTE
+        } else if (PsiTypes.byteType().equals(type) || PsiTypes.byteType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return BYTE;
-        } else if (PsiType.SHORT.equals(type) || PsiType.SHORT
+        } else if (PsiTypes.shortType().equals(type) || PsiTypes.shortType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return SHORT;
-        } else if (PsiType.INT.equals(type) || PsiType.INT
+        } else if (PsiTypes.intType().equals(type) || PsiTypes.intType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return INT;
-        } else if (PsiType.LONG.equals(type) || PsiType.LONG
+        } else if (PsiTypes.longType().equals(type) || PsiTypes.longType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return LONG;
-        } else if (PsiType.FLOAT.equals(type) || PsiType.FLOAT
+        } else if (PsiTypes.floatType().equals(type) || PsiTypes.floatType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return FLOAT;
-        } else if (PsiType.DOUBLE.equals(type) || PsiType.DOUBLE
+        } else if (PsiTypes.doubleType().equals(type) || PsiTypes.doubleType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return DOUBLE;
-        } else if (PsiType.CHAR.equals(type) || PsiType.CHAR
+        } else if (PsiTypes.charType().equals(type) || PsiTypes.charType()
                 .equals(PsiPrimitiveType.getUnboxedType(type))) {
             return CHAR;
         }
@@ -322,7 +323,7 @@ public class PsiCustomUtil {
                 type = ((PsiWildcardType) type).getBound();
             } else if (type instanceof PsiCapturedWildcardType) {
                 PsiType lowerBound = ((PsiCapturedWildcardType) type).getLowerBound();
-                type = (lowerBound != NULL ? lowerBound : ((PsiCapturedWildcardType) type).getUpperBound());
+                type = (lowerBound != PsiTypes.nullType() ? lowerBound : ((PsiCapturedWildcardType) type).getUpperBound());
             }
 
             if (type instanceof PsiClassType) {
@@ -388,9 +389,9 @@ public class PsiCustomUtil {
             return bound != null && isValidType(bound);
         } else if (type instanceof PsiCapturedWildcardType) {
             PsiType lowerBound = ((PsiCapturedWildcardType) type).getLowerBound();
-            type = (lowerBound != NULL ? lowerBound : ((PsiCapturedWildcardType) type).getUpperBound());
+            type = (lowerBound != PsiTypes.nullType() ? lowerBound : ((PsiCapturedWildcardType) type).getUpperBound());
 
-            return type != NULL && isValidType(type);
+            return type != PsiTypes.nullType() && isValidType(type);
         } else if (type instanceof PsiClassType) {
             final var psiClassType = (PsiClassType) type;
             try {
