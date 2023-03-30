@@ -37,7 +37,8 @@
     </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
-        <backgroundPostStartupActivity implementation="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectStartupActivity" />
+        <backgroundPostStartupActivity
+                implementation="in.oneton.idea.spring.assistant.plugin.suggestion.component.ProjectStartupActivity" />
         <completion.contributor language="yaml"
                                 implementationClass="in.oneton.idea.spring.assistant.plugin.suggestion.completion.YamlCompletionContributor"/>
 
