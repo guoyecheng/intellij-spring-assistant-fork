@@ -65,7 +65,7 @@ public class SelectedDependenciesTableModel extends AbstractTableModel
       }
     });
 
-    new TableSpeedSearch(selectedDependencies, value -> {
+    TableSpeedSearch.installOn(selectedDependencies, value -> {
       if (value instanceof Dependency) {
         return Dependency.class.cast(value).getName();
       }
