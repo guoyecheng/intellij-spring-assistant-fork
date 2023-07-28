@@ -134,7 +134,7 @@ public class DependencySelection implements Disposable, DependencySelectionChang
         };
     groups.setCellRenderer(categoryRenderer);
 
-    new ListSpeedSearch<>(groups,
+    ListSpeedSearch.installOn(groups,
         (Function<DependencyGroup, String>) value -> DependencyGroup.class.cast(value).getName());
 
     List<DependencyGroup> dependencyGroups = metadata.getDependencyComposite().getGroups();

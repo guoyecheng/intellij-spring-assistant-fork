@@ -97,7 +97,7 @@ public class PerGroupDependencyTableModel extends AbstractTableModel
       }
     });
 
-    new TableSpeedSearch(perGroupDependencyTable, value -> {
+    TableSpeedSearch.installOn(perGroupDependencyTable, value -> {
       if (value instanceof Dependency) {
         return Dependency.class.cast(value).getName();
       }
