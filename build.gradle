@@ -86,7 +86,7 @@ tasks{
 //        channels 'eap', 'nightly', 'default'
 //    }
     patchPluginXml {
-        sinceBuild = '231'
+        sinceBuild = '232'
         untilBuild = '232.*'
         pluginDescription = provider {readmeXmlAsHtml()}
         changeNotes = provider {changeLogAsHtml()}
