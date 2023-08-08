@@ -11,7 +11,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.vladsch.flexmark:flexmark:0.62.2'
+        classpath 'com.vladsch.flexmark:flexmark:0.64.8'
     }
 }
 
