@@ -85,3 +85,4 @@ See [here](CHANGELOG.md)
 
 Spring Assistant - IntelliJ Plugin is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
+fork from https://github.com/ErickPang/intellij-spring-assistant
